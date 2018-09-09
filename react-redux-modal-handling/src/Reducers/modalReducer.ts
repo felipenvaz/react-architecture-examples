@@ -1,79 +1,42 @@
 import IAction from "../Interfaces/IAction";
-import { EQUIPMENT, LOCATION } from "../Constants/actions";
-import EModalMode from "../Constants/EModalMode";
+import { MODAL } from "../Constants/actions";
 
 export interface IModalInstance {
     key: string;
-    mode: EModalMode;
-}
-
-export interface IModalState {
-    instances: { [key: string]: IModalInstance };
-    results: { [key: string]: any };
+    modal: React.ComponentClass<any>;
+    params?: any;
 }
 
 export interface IModalReducerState {
-    equipment: IModalState;
-    location: IModalState;
+    results: { [key: string]: any };
+    instances: IModalInstance[];
 }
 
 const initialState = {
-    equipment: {
-        results: {},
-        instances: {}
-    },
-    location: {
-        results: {},
-        instances: {}
-    }
+    results: {},
+    instances: []
 };
 
-export default (state: IModalReducerState = initialState, action: IAction) => {
-    let newState = state;
-    const { equipment, location } = state;
+export default (prevState: IModalReducerState = initialState, action: IAction) => {
+    let state = prevState;
     switch (action.type) {
-        case EQUIPMENT.MODAL.OPEN:
-            newState = {
-                ...newState,
-                equipment: {
-                    open: [...equipment.open, action.payload],
-                    instances: {
-                        ...equipment.instances,
-                        [action.payload]: { key: action.payload, mode: EModalMode.add }
-                    }
-                }
+        case MODAL.OPEN:
+            state = {
+                ...state,
+                instances: [...state.instances, action.payload]
             };
             break;
-        case EQUIPMENT.MODAL.CLOSE:
-            newState = {
-                ...newState,
-                equipment: {
-                    open: equipment.open.filter(key => key !== action.payload),
-                    instances: equipment.instances
-                }
-            };
+        case MODAL.CLOSE:
+            const key = action.meta;
+            state = {
+                ...state,
+                results: {
+                    ...state.results,
+                    [key]: action.payload
+                },
+                instances: state.instances.filter(i => i.key != key)
+            }
             break;
-        case LOCATION.MODAL.OPEN:
-            newState = {
-                ...newState,
-                location: {
-                    open: [...location.open, action.payload],
-                    instances: {
-                        ...location.instances,
-                        [action.payload]: { key: action.payload, mode: EModalMode.add }
-                    }
-                }
-            };
-            break;
-        case LOCATION.MODAL.CLOSE:
-            newState = {
-                ...newState,
-                location: {
-                    open: location.open.filter(key => key !== action.payload),
-                    instances: location.instances
-                }
-            };
-            break;
-    }
-    return newState;
+    };
+    return state;
 }
