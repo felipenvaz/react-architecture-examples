@@ -10,4 +10,4 @@ import rootReducer from './Reducers/rootReducer';
 export default createStore(rootReducer,
     //applyMiddleware(sagaMiddleware)
 );
-//sagaMiddleware.run(rootSaga);
+//sagaMiddleware.run(rootSaga); //
