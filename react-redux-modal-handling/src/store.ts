@@ -11,3 +11,5 @@ export default createStore(rootReducer,
     //applyMiddleware(sagaMiddleware)
 );
 //sagaMiddleware.run(rootSaga);
+
+//bot test
