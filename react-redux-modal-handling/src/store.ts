@@ -10,4 +10,8 @@ import rootReducer from './Reducers/rootReducer';
 export default createStore(rootReducer,
     //applyMiddleware(sagaMiddleware)
 );
-//sagaMiddleware.run(rootSaga); //
+//sagaMiddleware.run(rootSaga);
+
+// git add --all
+// git commit -m "bot test"
+// git push
