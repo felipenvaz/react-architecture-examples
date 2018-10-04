@@ -14,4 +14,4 @@ export default createStore(rootReducer,
 
 // git add --all
 // git commit -m "bot test"
-// git push
+// git push //
